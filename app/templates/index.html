@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,500,700,900" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+        <style res="stylesheet">
+            .event-details-container {
+                font-family: Lato, Arial, Helvetica, sans-serif;
+            }
+        </style>
+
+        <title>App</title>
+    </head>
+
+    <body>
+        <div id="app" v-cloak>
+            <v-app>
+                <v-content>
+                    <router-view></router-view>
+                </v-content>
+            </v-app>
+        </div>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js" integrity="sha512-L03kznCrNOfVxOUovR6ESfCz9Gfny7gihUX/huVbQB9zjODtYpxaVtIaAkpetoiyV2eqWbvxMH9fiSv5enX7bw==" crossorigin="anonymous"></script>
+
+        <script src="/static/js/home.vue.js"></script>
+
+        <script>
+            Vue.use(VueRouter);
+
+            const routes = [
+                { path: '/', component: homePage },
+            ]
+
+            const router = new VueRouter({
+                routes,
+                mode: "history"
+            });
+
+            router.beforeEach((to, from, next) => {
+                const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+                if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
+                next()
+            });
+
+            const app = new Vue({
+                el: "#app",
+                vuetify: new Vuetify({
+                    icons: {
+                        iconfont: "mdi",
+                    },
+                }),
+                router
+            });
+        </script>
+    </body>
+</html>

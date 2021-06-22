@@ -12,7 +12,8 @@ class Groups:
     ADMIN = 'admin'
     USER = 'user'
 
-def get_db() -> pymongo.database.Database:
+
+def get_db():
     global global_db
     if global_db is not None:
         return global_db
@@ -25,6 +26,7 @@ def get_db() -> pymongo.database.Database:
     db = g.db
 
     return db
+
 
 def init_db():
     db = get_db()

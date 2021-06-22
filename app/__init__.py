@@ -8,7 +8,7 @@ from . import db
 
 # app constructor
 def create_app():
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
 
     # get config
     app.config.from_pyfile("config.cfg", silent=True)
