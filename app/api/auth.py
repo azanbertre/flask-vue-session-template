@@ -1,5 +1,6 @@
-from flask import request, jsonify, session
+from flask import request, jsonify, session, g
 from werkzeug.security import check_password_hash, generate_password_hash
+from bson import ObjectId
 
 from app.decorators import json_request
 from app.db import get_db
@@ -81,6 +82,21 @@ def logout():
         "success": True,
         "message": "Logged out"
     })
+
+
+# load user
+@bp.before_app_request
+def load_logged_user():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        g.user = None
+    else:
+        db = get_db()
+
+        g.user = db.users.find_one({
+            "_id": ObjectId(user_id)
+        })
 
 
 # TODO handle valid username, pass
