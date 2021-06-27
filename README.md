@@ -10,4 +10,4 @@ flask run --reload
 ## You can check it here
 [http://localhost:5000]()
 
-### To make the first changes you can edit the `home.vue.js` file
+### To make the first changes you can edit `home.vue.js` file
