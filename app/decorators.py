@@ -24,7 +24,7 @@ def authenticated(f):
             return jsonify({
                 "success": False,
                 "message": "Not authenticated"
-            }), 400
+            }), 401
 
         return f(**kwargs)
     return wrapped_view

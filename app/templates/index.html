@@ -20,47 +20,28 @@
     <body>
         <div id="app" v-cloak>
             <v-app>
-                <v-content>
+                <v-main>
+                    <navbar></navbar>
                     <router-view></router-view>
-                </v-content>
+                </v-main>
             </v-app>
         </div>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+        <script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script>
         <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js" integrity="sha512-L03kznCrNOfVxOUovR6ESfCz9Gfny7gihUX/huVbQB9zjODtYpxaVtIaAkpetoiyV2eqWbvxMH9fiSv5enX7bw==" crossorigin="anonymous"></script>
 
-        <script src="/static/js/home.vue.js"></script>
+        <script src="/client/components/navbar.vue.js"></script>
+        <script src="/client/views/login.vue.js"></script>
+        <script src="/client/views/home.vue.js"></script>
 
-        <script>
-            Vue.use(VueRouter);
-
-            const routes = [
-                { path: '/', component: homePage },
-            ]
-
-            const router = new VueRouter({
-                routes,
-                mode: "history"
-            });
-
-            router.beforeEach((to, from, next) => {
-                const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-                if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
-                next()
-            });
-
-            const app = new Vue({
-                el: "#app",
-                vuetify: new Vuetify({
-                    icons: {
-                        iconfont: "mdi",
-                    },
-                }),
-                router
-            });
-        </script>
+        <script type="module" src="/client/store/index.js"></script>
+        <script type="module" src="/client/router/index.js"></script>
+        <script type="module" src="/client/api/index.js"></script>
+        <script type="module" src="/client/main.js"></script>
     </body>
 </html>

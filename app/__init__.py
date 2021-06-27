@@ -1,14 +1,14 @@
 from flask import Flask, render_template
 
 from app.convert import MongoJSONEncoder, ObjectIdConverter
-from app.api import bp
+from app.server import bp
 
 from . import db
 
 
 # app constructor
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="client")
 
     # get config
     app.config.from_pyfile("config.cfg", silent=True)
