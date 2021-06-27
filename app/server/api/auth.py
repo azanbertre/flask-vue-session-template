@@ -90,8 +90,14 @@ def register():
 
     db = get_db()
 
+    password = generate_password_hash(data["password"])
+    del data["password"]
+
     # insert new user
-    db.users.insert_one(data)
+    db.users.insert_one({
+        **data,
+        "password": password
+    })
 
     return jsonify({
         "success": True,
