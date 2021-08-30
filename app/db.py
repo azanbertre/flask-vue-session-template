@@ -1,3 +1,5 @@
+import datetime
+
 from werkzeug.security import generate_password_hash
 from flask.cli import with_appcontext
 from flask import current_app, g
@@ -31,56 +33,11 @@ def get_db():
 def init_db():
     db = get_db()
 
-    users_permission = db.permissions.find_one_and_update(
-        {'slug': 'users'},
-        {'$set': {
-            'name': "Users",
-            'description': ("Can edit users info, create a new user, "
-                            "and assign users permissions"),
-        }},
-        upsert=True,
-        return_document=pymongo.ReturnDocument.AFTER,
-    )
-
-    groups_permission = db.permissions.find_one_and_update(
-        {'slug': 'groups'},
-        {'$set': {
-            'name': 'Groups and Permissions',
-            'description': 'Can assign groups and permissions',
-        }},
-        upsert=True,
-        return_document=pymongo.ReturnDocument.AFTER,
-    )
-
-    admin_users_permission = db.permissions.find_one_and_update(
-        {'slug': 'users:admin'},
-        {'$set': {
-            'name': 'Edit Admin Users',
-            'description': 'Can create and edit admin users',
-        }},
-        upsert=True,
-        return_document=pymongo.ReturnDocument.AFTER,
-    )
-
-    edit_groups_permission = db.permissions.find_one_and_update(
-        {'slug': 'groups:edit'},
-        {'$set': {
-            'name': 'Edit Groups',
-            'description': 'Can edit groups and permissions',
-        }},
-        upsert=True,
-        return_document=pymongo.ReturnDocument.AFTER,
-    )
-
     admin_group = db.groups.find_one_and_update({'slug': Groups.ADMIN}, {
         '$set': {
             'name': 'Administrator',
-            'permissions': [
-                users_permission['_id'],
-                groups_permission['_id'],
-                admin_users_permission['_id'],
-                edit_groups_permission['_id'],
-            ]
+            'active': True,
+            'created_at': datetime.datetime.utcnow()
         }},
         upsert=True,
         return_document=pymongo.ReturnDocument.AFTER
@@ -89,7 +46,8 @@ def init_db():
     user_group = db.groups.find_one_and_update({'slug': Groups.USER}, {
         '$set': {
             'name': 'User',
-            'permissions': []
+            'active': True,
+            'created_at': datetime.datetime.utcnow()
         }},
         upsert=True,
         return_document=pymongo.ReturnDocument.AFTER
@@ -99,18 +57,10 @@ def init_db():
         {'username': 'admin'},
         {'$set': {
             'username': 'admin',
-            'password': generate_password_hash('admin123'),
-            'groups': [admin_group['slug'], user_group['slug']]
-        }},
-        upsert=True
-    )
-
-    db.users.update_one(
-        {'username': 'user'},
-        {'$set': {
-            'username': 'user',
-            'password': generate_password_hash('user123'),
-            'groups': [user_group['slug']]
+            'password': generate_password_hash('admin-pwd-123'),
+            'groups': [admin_group['slug'], user_group['slug']],
+            'created_at': datetime.datetime.utcnow(),
+            'active': True
         }},
         upsert=True
     )

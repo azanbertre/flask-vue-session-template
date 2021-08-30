@@ -1,10 +1,12 @@
+import datetime
+
 from flask import request, jsonify, session, g
 from werkzeug.security import check_password_hash, generate_password_hash
 from bson import ObjectId
 
-from app.decorators import json_request, authenticated
-from app.db import get_db
-
+from app.decorators import json_request, authenticated, api_authenticated
+from app.db import get_db, Groups
+from app.auth import current_user
 from app.server import bp
 
 import string
@@ -33,7 +35,8 @@ def login():
     db = get_db()
 
     user = db.users.find_one({
-        "username": username
+        "username": username,
+        "active": True
     })
 
     if user is None:
@@ -58,7 +61,8 @@ def login():
         "message": "Logged in",
         "data": {
             "user": {
-                "username": user["username"]
+                "username": user["username"],
+                "groups": user.get("groups", [Groups.USER])
             }
         }
     }), 200
@@ -66,6 +70,7 @@ def login():
 
 @bp.route("/auth/register", methods=["POST"])
 @json_request
+@api_authenticated
 def register():
     data = request.json
 
@@ -95,8 +100,11 @@ def register():
 
     # insert new user
     db.users.insert_one({
-        **data,
-        "password": password
+        "username": data["username"],
+        "password": password,
+        "groups": [Groups.USER],
+        "created_at": datetime.datetime.utcnow(),
+        "active": True
     })
 
     return jsonify({
@@ -108,7 +116,9 @@ def register():
 @bp.route("/auth/refresh", methods=["GET"])
 @authenticated
 def refresh():
-    if not g.user:
+    user = current_user()
+
+    if not user:
         return jsonify({
             "success": False,
             "message": "Refreshed"
@@ -119,7 +129,8 @@ def refresh():
         "message": "Refreshed",
         "data": {
             "user": {
-                "username": g.user["username"]
+                "username": user["username"],
+                "groups": user.get("groups", [Groups.USER])
             }
         }
     })
@@ -160,7 +171,8 @@ def is_user_request_valid(data, check_exists=True):
     if check_exists is True:
         db = get_db()
         user = db.users.find_one({
-            "username": username
+            "username": username,
+            "active": True
         })
 
         if user:

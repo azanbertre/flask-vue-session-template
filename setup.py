@@ -12,7 +12,9 @@ setup(
         'pymongo',
         'bcrypt',
         'werkzeug',
-        'pytest'
+        'pytest',
+        'apscheduler',
+        'fire'
     ],
     packages=find_packages()
 )
