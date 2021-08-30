@@ -30,7 +30,12 @@ const store = new Vuex.Store({
         },
         isLocalAuthenticated(state) {
             return localStorage.getItem("appHasAuth") === "1";
-        }
+        },
+        isAdmin(state) {
+            if (state.user === null) return false;
+            if (state.user === {}) return false;
+            return state.user.groups && state.user.groups.includes("admin");
+        },
     },
     actions: {
         refresh(store) {

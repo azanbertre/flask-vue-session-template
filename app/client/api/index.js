@@ -22,7 +22,43 @@ const api = {
         return axios.post(url, data, {
             headers: headers
         });
-    }
+    },
+
+    put(url, data, options={headers: null}, defaultRoute="/api") {
+        url = host + defaultRoute + url;
+
+        var headers = {};
+        if (options.headers) headers = options.headers;
+
+
+        return axios.put(url, data, {
+            headers: headers
+        });
+    },
+
+    patch(url, data, options={headers: null}, defaultRoute="/api") {
+        url = host + defaultRoute + url;
+
+        var headers = {};
+        if (options.headers) headers = options.headers;
+
+
+        return axios.patch(url, data, {
+            headers: headers
+        });
+    },
+
+    delete(url, data={}, options={headers: null}, defaultRoute="/api") {
+        url = host + defaultRoute + url;
+
+        var headers = {}
+        if (options.headers) headers = options.headers;
+
+        return axios.delete(url, {
+            headers: headers,
+            data: data
+        })
+    },
 }
 
 export default api;

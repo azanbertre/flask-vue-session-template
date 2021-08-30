@@ -34,6 +34,17 @@ def create_app():
     return app
 
 
+def run_scheduler(_app):
+    # import all jobs
+    import app.jobs
+
+    from app.scheduler import scheduler
+
+    # start scheduler
+    scheduler.app = _app
+    scheduler.start()
+
+
 if __name__ == "__main__":
     app = create_app()
     app.run()
