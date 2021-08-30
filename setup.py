@@ -6,7 +6,7 @@ setup(
     version='0.0.1',
     description='',
     author='Various',
-    url='https://github.com/azanbertre/flask-vue-template',
+    url='https://github.com/azanbertre/flask-vue-session-template',
     install_requires=[
         'flask',
         'pymongo',
