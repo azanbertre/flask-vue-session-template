@@ -2,7 +2,7 @@ const notification = Vue.component("Notification", {
     template: /* html */
         `
         <v-alert
-            dismissable
+            dismissible
             elevation="5"
             :type="notification.type"
         >

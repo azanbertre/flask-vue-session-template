@@ -15,17 +15,7 @@ const homePage = Vue.component("HomePage", {
     },
 
     created() {
-        setInterval(() => {
-            console.log(this.$store)
-            this.$store
-                .commit('notifications/ADD_NOTIFICATION', {
-                    title: 'Success!',
-                    text: "test",
-                    type: 'success',
-                    timeout: true,
-                    delay: 10000
-                });
-        }, 2000)
+
     },
 
     methods: {
