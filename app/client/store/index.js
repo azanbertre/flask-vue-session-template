@@ -1,5 +1,6 @@
 import api from "../api/index.js";
 import router from "../router/index.js";
+import notifications from "./notifications.js";
 
 Vue.use(Vuex);
 
@@ -7,6 +8,9 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         user: {}
+    },
+    modules: {
+        notifications: notifications
     },
     mutations: {
         authenticate(state, user) {
