@@ -8,8 +8,18 @@
         <link href="/client/static/css/vuetify.min.css" rel="stylesheet">
 
         <style res="stylesheet">
-            .event-details-container {
-                font-family: Lato, Arial, Helvetica, sans-serif;
+            .notifications {
+                right: 0;
+                left: 0;
+                bottom: 0;
+                position: absolute;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            .notifications > div {
+                width: 60%;
+                max-width: 600px;
             }
         </style>
 
@@ -22,6 +32,7 @@
                 <v-main>
                     <navbar></navbar>
                     <router-view></router-view>
+                    <notifications></notifications>
                 </v-main>
             </v-app>
         </div>
@@ -32,7 +43,10 @@
         <script src="/client/static/js/vue-router.js"></script>
         <script src="/client/static/js/vuetify.min.js"></script>
 
-        <script src="/client/components/navbar.vue.js"></script>
+        <script src="/client/components/global/navbar.vue.js"></script>
+        <script src="/client/components/global/notification.vue.js"></script>
+        <script src="/client/components/global/notifications.vue.js"></script>
+
         <script src="/client/views/login.vue.js"></script>
         <script src="/client/views/home.vue.js"></script>
 
