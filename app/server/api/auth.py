@@ -157,7 +157,8 @@ def load_logged_user():
         db = get_db()
 
         g.user = db.users.find_one({
-            "_id": ObjectId(user_id)
+            "_id": ObjectId(user_id),
+            "active": True
         })
 
 
