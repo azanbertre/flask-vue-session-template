@@ -49,7 +49,7 @@ def login():
     if not check_password_hash(user["password"], password):
         return jsonify({
             "success": False,
-            "message": "Username or password don't match"
+            "message": "Wrong credentials"
         }), 400
 
     # clear and set new session
